@@ -1,71 +1,47 @@
-//constructer function which can take in a series of values and object..
-//..with the same properties contained inside
-function Character(name, profession, gender, age, strength, HP) {
-    this.name = name;
-    this.profession = profession;
-    this.gender = gender;
-    this.age = age;
-    this.strength = strength;
-    this.HP = HP;
+//call inquirer
+var inquirer = require("inquirer");
 
-    //method which print all the stats for a character in the terminal
-    this.printStats = function () {
-        console.log("Name: " + this.name + "\nProfession: " + this.profession +
-            "\nGender " + this.gender + "\nAge " + this.age + "\nStrength: " +
-            this.strength + "\nHP " + this.HP);
-            console.log("\n----------\n")
-    };
+//questions that will be asked
+inquirer.prompt([{
 
-    //method determines whether or not a characts HP are less than zero
-    //if its less than 0 the charcter dies
-    this.isAlive = function () {
-        if (this.HP > 0) {
-            console.log("\n---------\n");
-            console.log(this.name + " is still alive!");
-            console.log("\n---------\n");
-            return true;
-        }
-        console.log(this.name + " has died!");
-        return false
-    }
+    type: "input",
+    name: "name",
+    message: "Whats your name? ",
 
-    //method which takes in a second object and decreases their HP by the characters strength
-    this.attack = function (character2) {
-        console.log(this.name + " attacked!");
-        character2.HP -= this.strength;
-    }
+}, {
 
-    //method that increases characters stats/level
-    this.levelUp = function () {
-        this.age += 1;
-        this.strength += 5;
-        this.HP += 25;
+    type: "list",
+    name: "pokemonChoice",
+    message: "Choose your starter pokemon: ",
+    choices: ["Bulbasaur", "Squirtle", "Charmander"],
 
-    }
-};
+},{
 
-//create new characters using the "Character" construction from above
-var Necromancer = new Character ("Darrel", "Necromancer", "Male", 900, 30, 50);
-var ComicRelief = new Character ("Weewee", "Useless Sidekick", "Male", 10, 5, 30);
+    type: "input",
+    name: "rival",
+    message: "What is your rival's name? "
 
-//prints the stats in the terminal from the printStats function we created before
-Necromancer.printStats();
-ComicRelief.printStats();
+}, {
 
-//Necromancer attacks ComicRelief - action gets logged
-//it called the attack function
-Necromancer.attack(ComicRelief);
-ComicRelief.printStats();
+    type: "checkbox",
+    name: "carryingWhat",
+    message: "Choose what you are carrying: ",
+    choices: ["Pokeball", "Pokedex", "Oran Berry" , "A small professor Oak"]
 
-//calls the levelUp function
-Necromancer.levelUp();
-Necromancer.printStats()
+}, {
 
-while (ComicRelief.isAlive() === true && Necromancer.isAlive() === true) {
-    Necromancer.attack(ComicRelief);
-    ComicRelief.attack(Necromancer);
-
-    Necromancer.printStats();
-    ComicRelief.printStats();
-
+    type: "confirm",
+    name: "goExplore",
+    message: "Leave the poke center?"
 }
+
+]).then(function(user) {
+
+    console.log("===========================");
+    console.log("Your name is " + user.name);
+    console.log("You chose " + user.pokemonChoice + "!");
+    console.log("Your rivals name is " + user.rival);
+    console.log("Your holding " + user.carryingWhat);
+    console.log("===========================");
+
+});
